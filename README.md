@@ -42,8 +42,9 @@ To run this project locally, follow these steps:
 
 ### Screenshots to show app completion
 
-![Screenshot_20240916_225814](https://github.com/user-attachments/assets/b2b626fc-57c8-4c94-84f4-17b5c053ca7e)
-![Screenshot_20240916_225841](https://github.com/user-attachments/assets/0205f4d3-4a2c-46b9-ba14-1c82b26a7c83)
+<img src="https://github.com/user-attachments/assets/b2b626fc-57c8-4c94-84f4-17b5c053ca7e" width="250" height="500" />
+
+<img src="https://github.com/user-attachments/assets/0205f4d3-4a2c-46b9-ba14-1c82b26a7c83" width="250" height="500" />
 
 
 ### License
