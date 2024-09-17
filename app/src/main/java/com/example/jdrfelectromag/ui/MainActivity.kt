@@ -23,7 +23,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jdrfelectromag.adapter.BluetoothDeviceAdapter
-import com.example.jdrfelectromag.DeviceDetailActivity
 import com.example.jdrfelectromag.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -222,11 +221,12 @@ class MainActivity : AppCompatActivity() {
     private fun sortDevices() {
         if (hasBluetoothPermissions()) {
             val devices = scannedDevices.value ?: return
+            val namedDevices = devices.filter { !it.device.name.isNullOrEmpty() }
             deviceAdapter.submitList(
                 when (currentSortOption) {
-                    SortOption.NAME -> devices.sortedBy { it.device.name }
-                    SortOption.MAC_ADDRESS -> devices.sortedBy { it.device.address }
-                    SortOption.SCAN_TIME -> devices.sortedByDescending { it.timestampNanos }
+                    SortOption.NAME -> namedDevices.sortedBy { it.device.name }
+                    SortOption.MAC_ADDRESS -> namedDevices.sortedBy { it.device.address }
+                    SortOption.SCAN_TIME -> namedDevices.sortedByDescending { it.timestampNanos }
                 }
             )
         } else {
@@ -236,10 +236,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showDeviceDetails(device: BluetoothDevice) {
-        val intent = Intent(this, DeviceDetailActivity::class.java).apply {
-            putExtra("bluetoothDevice", device)
+        val deviceAddress = device.address
+        val isConnected = connectedDevices.containsKey(deviceAddress)
+        if (isConnected) {
+            val intent = Intent(this, DeviceDetailActivity::class.java).apply {
+                putExtra("bluetoothDevice", device)
+            }
+            startActivity(intent)
         }
-        startActivity(intent)
     }
 
     @SuppressLint("MissingPermission")
@@ -264,11 +268,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val scanCallback = object : ScanCallback() {
+        @SuppressLint("MissingPermission")
         override fun onScanResult(callbackType: Int, result: ScanResult) {
             val updatedResults = scannedDevices.value ?: mutableListOf()
-            if (!updatedResults.any { it.device.address == result.device.address }) {
-                updatedResults.add(result)
-                scannedDevices.postValue(updatedResults)
+
+            // Only add the device if it has a non-null and non-empty name
+            if (!result.device.name.isNullOrEmpty()) {
+                // Check if the device is already in the list to avoid duplicates
+                if (!updatedResults.any { it.device.address == result.device.address }) {
+                    updatedResults.add(result)
+                    scannedDevices.postValue(updatedResults)
+                }
             }
         }
 
