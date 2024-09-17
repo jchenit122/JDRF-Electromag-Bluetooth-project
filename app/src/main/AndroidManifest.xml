@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Needed for scanning Bluetooth devices -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" android:required="true"/>
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:required="true"/>
@@ -31,7 +30,7 @@
 
     <!-- DeviceDetailActivity declaration -->
     <activity
-        android:name=".DeviceDetailActivity"
+        android:name=".ui.DeviceDetailActivity"
         android:exported="true" />
     </application>
 
